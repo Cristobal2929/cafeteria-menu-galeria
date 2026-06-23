@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Café Aurora – Menú y Galería</title>
+
+  <!-- Google Fonts: display + body -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --color-primary: #3b4cca;   /* indigo */
+      --color-bg: #fafafa;
+      --color-text: #222;
+      --color-accent: #ffb84d;   /* warm amber for highlights */
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin:0; font-family:'Source Sans Pro', sans-serif; background:var(--color-bg); color:var(--color-text);
+      line-height:1.6;
+    }
+    a { color:var(--color-primary); text-decoration:none; }
+    a:focus { outline:3px solid var(--color-primary); outline-offset:2px; }
+
+    header {
+      background:linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      color:#fff;
+      padding:2rem 1rem;
+      text-align:center;
+    }
+    header h1 {
+      font-family:'Playfair Display', serif;
+      font-size:2.5rem;
+      margin:0;
+    }
+    header p {
+      margin:0.5rem 0 0;
+      font-size:1.2rem;
+    }
+
+    .hero {
+      position:relative;
+      margin-top:-1rem;
+      padding:3rem 1rem 2rem;
+      background:#fff;
+      border-radius:1rem 1rem 0 0;
+      box-shadow:0 -4px 12px rgba(0,0,0,0.05);
+    }
+    .hero img {
+      max-width:200px;
+      width:100%;
+      height:auto;
+      display:block;
+      margin:0 auto;
+    }
+    .hero h2 {
+      font-family:'Playfair Display', serif;
+      font-size:2rem;
+      text-align:center;
+      margin:1rem 0 0;
+    }
+
+    .menu, .gallery {
+      max-width:900px; margin:2rem auto; padding:0 1rem;
+    }
+    .menu h3, .gallery h3 {
+      font-family:'Playfair Display', serif;
+      font-size:1.8rem;
+      margin-bottom:1rem;
+      color:var(--color-primary);
+    }
+    .menu ul {
+      list-style:none; padding:0;
+    }
+    .menu li {
+      display:flex; justify-content:space-between; padding:.5rem 0;
+      border-bottom:1px solid #e0e0e0;
+    }
+    .menu li span:first-child { font-weight:600; }
+    .menu li span:last-child { font-weight:400; color:#555; }
+
+    .gallery-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));
+      gap:0.5rem;
+    }
+    .gallery-grid img {
+      width:100%; height:auto; cursor:pointer; border-radius:4px;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position:fixed; inset:0; background:rgba(0,0,0,0.8);
+      display:none; align-items:center; justify-content:center;
+      z-index:1000;
+    }
+    .lightbox img { max-width:90%; max-height:80%; border-radius:8px; }
+    .lightbox:focus { outline:none; }
+
+    /* Responsive */
+    @media (max-width:600px) {
+      header h1 { font-size:2rem; }
+      .hero h2 { font-size:1.5rem; }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation:none !important; transition:none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Café Aurora</h1>
+  <p>Tu rincón de aromas y sabores artesanales</p>
+</header>
+
+<section class="hero">
+  <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=400&q=80" alt="Taza de café latte con arte">
+  <h2>Descubre el placer de un buen café</h2>
+</section>
+
+<main>
+  <section class="menu">
+    <h3>Menú</h3>
+    <ul>
+      <li><span>Espresso</span><span>$2.00</span></li>
+      <li><span>Cappuccino</span><span>$3.50</span></li>
+      <li><span>Latte con leche de avena</span><span>$4.00</span></li>
+      <li><span>Cold Brew</span><span>$3.20</span></li>
+      <li><span>Tarta de zanahoria</span><span>$2.80</span></li>
+      <li><span>Bagel integral con queso crema</span><span>$3.00</span></li>
+    </ul>
+  </section>
+
+  <section class="gallery">
+    <h3>Galería</h3>
+    <div class="gallery-grid">
+      <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=300&q=80" alt="Café con espuma">
+      <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=300&q=80" alt="Desayuno en el café">
+      <img src="https://images.unsplash.com/photo-1526045478516-991a054c5c2c?auto=format&fit=crop&w=300&q=80" alt="Taza de espresso">
+      <img src="https://images.unsplash.com/photo-1551024709-8f23befc6e8b?auto=format&fit=crop&w=300&q=80" alt="Pastel de chocolate">
+    </div>
+  </section>
+</main>
+
+<div class="lightbox" tabindex="-1" aria-label="Imagen ampliada">
+  <img src="" alt="">
+</div>
+
+<script>
+  // Lightbox simple
+  const gallery = document.querySelectorAll('.gallery-grid img');
+  const lightbox = document.querySelector('.lightbox');
+  const lightImg = lightbox.querySelector('img');
+
+  gallery.forEach(img => {
+    img.addEventListener('click', () => {
+      lightImg.src = img.src;
+      lightImg.alt = img.alt;
+      lightbox.style.display = 'flex';
+      lightbox.focus();
+    });
+  });
+
+  lightbox.addEventListener('click', () => {
+    lightbox.style.display = 'none';
+    lightImg.src = '';
+  });
+
+  // Close with Esc key
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && lightbox.style.display === 'flex') {
+      lightbox.click();
+    }
+  });
+</script>
+
+</body>
+</html>
